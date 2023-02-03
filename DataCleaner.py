@@ -3,8 +3,9 @@ import numpy as np
 import warnings
 
 class DataCleaner:
+    #define class
     def __init__(self):
-        #Initializing all variables
+        #Initializing all variables (input and output dataframes as well as booleans tracking which fields have been cleaned)
         self._inputDF = None
         self._outputDF = None
         self.cleanedPostcode = False
@@ -18,6 +19,7 @@ class DataCleaner:
 
 
     def cleanProductName(self):
+        #Exception if data is not loaded yet
         if self._inputDF is None:
             raise Exception("Please load a df first using DataCleaner.load_DF()")
         else:
@@ -37,7 +39,7 @@ class DataCleaner:
 
     #Method for cleaning the Postcode
     def cleanPostcode(self):
-        #Exception if data is not loaded
+        #Exception if data is not loaded yet
         if self._inputDF is None:
             raise Exception("Please load a df first using DataCleaner.load_DF()")
         else:
@@ -51,7 +53,7 @@ class DataCleaner:
 
 
     def returnClean(self):
-        #Exception if data is not loaded
+        #Exception if data is not loaded yet
         if self._inputDF is None:
             raise Exception("Please load a df first using DataCleaner.load_DF()")
 
@@ -59,7 +61,7 @@ class DataCleaner:
             #Warn if postcode wasn't cleaned
             if self.cleanedPostcode==False:
                 warnings.warn("WARNING: Returning the cleaned DF, but you haven't cleaned postcode yet!")
-            #Warn if Bundesland wasn't cleaned
+            #Warn if product_name wasn't cleaned
             if self.cleanedProductName==False:
                 warnings.warn("WARNING: Returning the cleaned DF, but you haven't cleaned product_name yet!")
             

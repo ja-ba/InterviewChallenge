@@ -43,7 +43,7 @@ class DataCleaner:
         else:
             #Logic: Remove strings and then convert to Integer format. Then convert to String to avoid numeric interpretation of column
             #Technical: Converts the Postcode to a string --> then removes all letters --> then remove all special characters except . --> then transforms to float to keep the numeric attribute of postcodes saved as floats --> then to integer since float representation is not needed --> and then to string again to avoid numeric interpretation  
-            self._outputDF["postcode_int"] = self._inputDF["postcode"].astype("str").str.replace("[a-zA-Z]",'', regex=True).replace("[^.0-9]",'', regex=True).astype("float").astype("int")
+            self._outputDF["postcode"] = self._inputDF["postcode"].astype("str").str.replace("[a-zA-Z]",'', regex=True).replace("[^.0-9]",'', regex=True).astype("float").astype("int").astype("str")
             #Set cleanedPostcode flag to true
             self.cleanedPostcode = True
             #Print success message

@@ -58,9 +58,9 @@ class DataCleaner:
         else:
             #Warn if postcode wasn't cleaned
             if self.cleanedPostcode==False:
-                warnings.warn("WARNING: Returning the cleaned DF, but you haven't cleaned Postcode yet!")
+                warnings.warn("WARNING: Returning the cleaned DF, but you haven't cleaned postcode yet!")
             #Warn if Bundesland wasn't cleaned
             if self.cleanedProductName==False:
-                warnings.warn("WARNING: Returning the cleaned DF, but you haven't cleaned Bundesland yet!")
+                warnings.warn("WARNING: Returning the cleaned DF, but you haven't cleaned product_name yet!")
             
             return self._outputDF

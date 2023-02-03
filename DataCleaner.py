@@ -23,15 +23,19 @@ class DataCleaner:
         if self._inputDF is None:
             raise Exception("Please load a df first using DataCleaner.load_DF()")
         else:
-            #Replace everything containing KO and 24 OR Ö and 24 with E.ON STROM ÖKO 24
-            self._outputDF.loc[self._outputDF["original_product_name"].str.contains('Ö*24|KO*24', regex=True) ,"original_product_name"] = "E.ON STROM ÖKO 24"
 
-            #Replace everything containing KO or Ö BUT NOT 24 with E.ON STROM ÖKO
-            self._outputDF.loc[(self._outputDF["original_product_name"].str.contains('Ö|KO', regex=True)) & ~(self._outputDF["original_product_name"].str.contains('24', regex=True)) ,"original_product_name"] = "E.ON STROM ÖKO"
+            #Create new column
+            self._outputDF["original_product_name_cleaned"] = self._outputDF["original_product_name"]
 
-            #Replace everything containing 24 but not Ö or KO with "E.ON STROM 24"
-            self._outputDF.loc[(self._outputDF["original_product_name"].str.contains('24', regex=True)) & ~(self._outputDF["original_product_name"].str.contains('Ö|KO', regex=True)) ,"original_product_name"] = "E.ON STROM 24"
+            #Replace everything containing (Ö and 24) OR (K and 24) with "E.ON STROM ÖKO 24"
+            self._outputDF.loc[self._outputDF["original_product_name"].str.contains('Ö*24|K*24', regex=True) ,"original_product_name_cleaned"] = "E.ON STROM ÖKO 24"
 
+            #Replace everything containing (Ö or K) BUT NOT 24 with "E.ON STROM ÖKO"
+            self._outputDF.loc[(self._outputDF["original_product_name"].str.contains('Ö|K', regex=True)) & ~(self._outputDF["original_product_name"].str.contains('24', regex=True)) ,"original_product_name_cleaned"] = "E.ON STROM ÖKO"
+            
+            #Replace everything containing 24 BUT NOT (Ö or K) with "E.ON STROM 24"
+            self._outputDF.loc[(self._outputDF["original_product_name"].str.contains('24', regex=True)) & ~(self._outputDF["original_product_name"].str.contains('Ö|K', regex=True)) ,"original_product_name_cleaned"] = "E.ON STROM 24"
+            
             self.cleanedProductName = True
             #Print success message
             print("Product Name cleaning successfull")
@@ -45,7 +49,7 @@ class DataCleaner:
         else:
             #Logic: Remove strings and then convert to Integer format. Then convert to String to avoid numeric interpretation of column
             #Technical: Converts the Postcode to a string --> then removes all letters --> then remove all special characters except . --> then transforms to float to keep the numeric attribute of postcodes saved as floats --> then to integer since float representation is not needed --> and then to string again to avoid numeric interpretation  
-            self._outputDF["postcode"] = self._inputDF["postcode"].astype("str").str.replace("[a-zA-Z]",'', regex=True).replace("[^.0-9]",'', regex=True).astype("float").astype("int").astype("str")
+            self._outputDF["postcode_cleaned"] = self._inputDF["postcode"].astype("str").str.replace("[a-zA-Z]",'', regex=True).replace("[^.0-9]",'', regex=True).astype("float").astype("int").astype("str")
             #Set cleanedPostcode flag to true
             self.cleanedPostcode = True
             #Print success message
